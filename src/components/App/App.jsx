@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import axios from 'axios';
 
 function App() {
     return (
@@ -13,4 +14,21 @@ function App() {
     );
 }
 
+const addPhotos = (evt) => {
+  evt.preventDefault();
+  axios ({
+    method: 'POST',
+    urll: '/gallery',
+    data: {
+      path: photoPath,
+      description: photoDescription,
+      likes: photoLikes
+    }
+  }).then(response => {
+    console.log('in GET response');
+  }).catch(error => {
+    console.log(error);
+    alert('Somthing wend wrong.');
+  });
+} // addPhotos
 export default App;
