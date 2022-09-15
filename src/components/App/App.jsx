@@ -1,34 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
+import GalleryList from '../GalleryList/GalleryList';
+
 
 function App() {
+  let [galleryArray, setGalleryArray] = useState([]);
+
+  useEffect(() => {
+    console.log('useEffect - page load');
+    fetchPhotos();
+  }, []);
+
+  const fetchPhotos = () => {
+    axios({
+      method: 'GET',
+      url: '/gallery',
+    }).then(response => {
+      setGalleryArray(response.data);
+    }).catch(error => {
+      console.log(error);
+      alert('Something went wrong!');
+    });
+  }
+
     return (
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">Gallery of My Life</h1>
         </header>
         <p>Gallery goes here</p>
-        <img src="images/goat_small.jpg"/>
+          <GalleryList galleryArray={galleryArray}/>
       </div>
     );
 }
 
-const addPhotos = (evt) => {
-  evt.preventDefault();
-  axios ({
-    method: 'POST',
-    urll: '/gallery',
-    data: {
-      path: photoPath,
-      description: photoDescription,
-      likes: photoLikes
-    }
-  }).then(response => {
-    console.log('in GET response');
-  }).catch(error => {
-    console.log(error);
-    alert('Somthing wend wrong.');
-  });
-} // addPhotos
 export default App;
+
